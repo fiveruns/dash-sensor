@@ -11,11 +11,9 @@ module Dash::Sensor::Plugins
         total = stats[:requests]
         last = old_stats[:requests]
         this_minute = total - last
-        puts "Requests: #{this_minute}"
         this_minute > 0 && last > 0 ? this_minute : 0
       end
       recipe.absolute :connections, 'Active Connections' do
-        puts "Connections: #{stats[:active]}"
         stats[:active]
       end
     end
