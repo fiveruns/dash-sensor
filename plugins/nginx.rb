@@ -1,28 +1,27 @@
 require 'open-uri'
 
 module Dash::Sensor::Plugins
-  class Apache
+  class Nginx
     include SensorPlugin
     
     ONE_KB = 1024
 
-    register :apache, :url => 'http://dash.fiveruns.com' do |recipe|
+    register :nginx, :url => 'http://dash.fiveruns.com' do |recipe|
       recipe.counter :requests, 'Requests' do
-        total = Integer(stats['Total Accesses'])
-        last = Integer(old_stats['Total Accesses'])
+        total = stats[:requests]
+        last = old_stats[:requests]
         this_minute = total - last
+        puts "Requests: #{this_minute}"
         this_minute > 0 && last > 0 ? this_minute : 0
       end
-      recipe.counter :mbytes, 'Transferred', :unit => 'MB' do
-        total = Integer(stats['Total kBytes'])
-        last = Integer(old_stats['Total kBytes'])
-        this_minute = Float(total - last) / ONE_KB
-        this_minute > 0 && last > 0 ? this_minute : 0
+      recipe.absolute :connections, 'Active Connections' do
+        puts "Connections: #{stats[:active]}"
+        stats[:active]
       end
     end
     
     def configure(options)
-      @url = options.fetch(:url, 'http://localhost/server-status?auto')
+      @url = options.fetch(:url, 'http://localhost/nginx-status')
     end
 
     private
@@ -43,9 +42,18 @@ module Dash::Sensor::Plugins
 
     def stats_data
       begin
-        lines = open(@url).read.split("\n")
-        Hash[*lines.map {|line| line.split(':') }.flatten]
-      rescue => e
+        results = Hash.new(0)
+        data = open(@url).read
+        data.each_line do |line|
+          case line
+          when /^Active connections:\s+(\d+)/
+            results[:active] = Integer($1)
+          when /^\s+(\d+)\s+(\d+)\s+(\d+)/
+            results[:requests] = Integer($3)
+          end
+        end
+        results
+      rescue Exception => e
         LOG.error "Error contacting #{@url}"
         LOG.error "#{e.class.name}: #{e.message}"
         Hash.new(0)

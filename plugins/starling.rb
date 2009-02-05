@@ -22,7 +22,7 @@ module Dash::Sensor::Plugins
 
     def self.stats
       if !@time || @time < Time.now - 55
-        puts "Fetching stats at #{Time.now}"
+        LOG.debug "Fetching stats at #{Time.now}"
         @stats = parse(instance.send(:stats_data))
         @time = Time.now
       end
@@ -31,24 +31,29 @@ module Dash::Sensor::Plugins
 
     def stats_data
       data = ''
-      sock = TCPSocket.new(@host, @port)
-      sock.print("stats\r\n")
-      sock.flush
-      # memcached does not close the socket once it is done writing
-      # the stats data.  We need to read line by line until we detect
-      # the END line and then stop/close on our side.
-      stats = sock.gets
-      while true
-        data += stats
-        break if stats.strip == 'END'
+      begin
+        sock = TCPSocket.new(@host, @port)
+        sock.print("stats\r\n")
+        sock.flush
+        # memcached does not close the socket once it is done writing
+        # the stats data.  We need to read line by line until we detect
+        # the END line and then stop/close on our side.
         stats = sock.gets
+        while true
+          data += stats
+          break if stats.strip == 'END'
+          stats = sock.gets
+        end
+        sock.close
+      rescue Exception => e
+        LOG.error "Error contacting Starling at #{@host}:#{@port}"
+        LOG.error "#{e.class.name}: #{e.message}"
       end
-      sock.close
       data
     end
 
     def self.parse(stats_data)
-      stats = {}
+      stats = Hash.new(0)
       stats_data.each_line do |line|
         stats[$1] = $2 if line =~ /STAT (\w+) (\S+)/
       end
