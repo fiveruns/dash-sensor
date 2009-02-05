@@ -1,9 +1,17 @@
 require 'fiveruns/dash'
+require 'sensor_plugin'
 
 module Dash
   module Sensor
 
+    RECIPES = []
+
     class Engine
+
+      def self.registered(name, url, klass)
+        klass.instance = klass.new
+        RECIPES << [name, url, klass]
+      end
 
       def start(options)
         load_plugins(options)
@@ -31,8 +39,8 @@ module Dash
       def start_dash(setup)
         LOG.info("Starting Dash Sensor for #{setup.name} [#{setup.token}]")
         Fiveruns::Dash.configure :app => setup.token do |config|
-          setup.plugins.each do |plugin|
-            config.add_recipe plugin
+          RECIPES.each do |(name, url, _)|
+            config.add_recipe name.to_sym, url
           end
         end
         Fiveruns::Dash.session.reporter.interval = 60
@@ -48,10 +56,9 @@ module Dash
 
     class Setup
       
-      attr_accessor :token, :name, :plugins
+      attr_accessor :token, :name
 
       def initialize
-        self.plugins = []
         self.name = 'My App Name'
         self.token = 'change-me-to-your-app-token'
       end
@@ -59,7 +66,6 @@ module Dash
       def plugin(name, options={})
         LOG.info("Loading plugin #{name} with options #{options.inspect}")
         
-        self.plugins << name.to_sym
         $PLUGIN_PATH.each do |path|
           raise ArgumentError, "Unable to find #{name}.rb in plugin path: #{$PLUGIN_PATH[0..-2].inspect}" unless path
           file = File.join(path, name)
@@ -70,8 +76,7 @@ module Dash
           end
         end
 
-        klass = Dash::Sensor::Plugins.const_get(camelize(name))
-        klass.const_get('INSTANCE').configure(options)
+        RECIPES.last.last.instance.configure(options)
       end
 
       def url=(value)
@@ -82,16 +87,6 @@ module Dash
         self
       end
 
-      private
-
-      def camelize(lower_case_and_underscored_word, first_letter_in_uppercase = true)
-        if first_letter_in_uppercase
-          lower_case_and_underscored_word.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
-        else
-          lower_case_and_underscored_word.first.downcase + camelize(lower_case_and_underscored_word)[1..-1]
-        end
-      end
-      
     end
 
   end

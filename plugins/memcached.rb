@@ -1,7 +1,8 @@
 module Dash::Sensor::Plugins
   class Memcached
+    include SensorPlugin
 
-    Fiveruns::Dash.register_recipe :memcached, :url => 'http://dash.fiveruns.com' do |recipe|
+    register :memcached, :url => 'http://dash.fiveruns.com' do |recipe|
       recipe.absolute :bytes, 'Cache Size', :unit => 'MB' do
         Float(stats['bytes']) / (1024 * 1024)
       end
@@ -13,8 +14,6 @@ module Dash::Sensor::Plugins
       end
     end
 
-    INSTANCE = Memcached.new
-    
     def configure(options)
       @host = options.fetch(:iface, 'localhost')
       @port = Integer(options.fetch(:port, 11211))
@@ -25,7 +24,7 @@ module Dash::Sensor::Plugins
     def self.stats
       if !@time || @time < Time.now - 55
         puts "Fetching stats at #{Time.now}"
-        @stats = parse(INSTANCE.send(:stats_data))
+        @stats = parse(instance.send(:stats_data))
         @time = Time.now
       end
       @stats

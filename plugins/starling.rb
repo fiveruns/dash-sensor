@@ -1,19 +1,17 @@
 module Dash::Sensor::Plugins
   class Starling
+    include SensorPlugin
 
-    Fiveruns::Dash.register_recipe :starling, :url => 'http://dash.fiveruns.com' do |recipe|
-      recipe.absolute :bytes, 'Cache Size', :unit => 'MB' do
-        Float(stats['bytes']) / (1024 * 1024)
+    register :starling, :url => 'http://dash.fiveruns.com' do |recipe|
+      recipe.absolute :processed, 'Processed Items' do
+        queues = stats.keys.map { |name| name =~ /queue_(\w+)_total_items/; $1 }.compact
+        queues.inject(0) { |total, queue_name| total + Integer(stats["queue_#{queue_name}_total_items"]) - Integer(stats["queue_#{queue_name}_items"]) }
       end
-      recipe.percentage :queue_size, 'Cache Hit Rate' do
-        hits = Integer(stats['get_hits'])
-        misses = Integer(stats['get_misses'])
-        total = hits + misses
-        total == 0 ? 0 : ((Float(hits) / total) * 100)
+      recipe.absolute :queue_size, 'Current Size' do
+        queues = stats.keys.find_all { |name| name =~ /queue_\w+_items/ }
+        queues.inject(0) { |total, queue_name| total + Integer(stats[queue_name]) }
       end
     end
-    
-    INSTANCE = Starling.new
     
     def configure(options)
       @host = options.fetch(:iface, 'localhost')
@@ -21,11 +19,11 @@ module Dash::Sensor::Plugins
     end
 
     private
-    
+
     def self.stats
       if !@time || @time < Time.now - 55
         puts "Fetching stats at #{Time.now}"
-        @stats = parse(INSTANCE.send(:stats_data))
+        @stats = parse(instance.send(:stats_data))
         @time = Time.now
       end
       @stats

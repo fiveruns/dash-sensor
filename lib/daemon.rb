@@ -40,6 +40,7 @@ require 'logger'
 LOG = Logger.new(STDOUT)
 LOG.level = options.verbose ? Logger::DEBUG : Logger::INFO
 
-require File.join(File.dirname(__FILE__), "sensor")
+$LOAD_PATH.unshift File.dirname(__FILE__)
+require "sensor"
 puts "Starting Dash Sensor [#{$$}] at #{Time.now}"
 Dash::Sensor::Engine.new.start(options)
