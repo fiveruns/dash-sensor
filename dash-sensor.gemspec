@@ -1,9 +1,9 @@
 Gem::Specification.new do |s|
-	s.name = "fiveruns_dash_sensor"
+	s.name = "dash-sensor"
 	s.version = "0.8.0"
 	s.authors = "FiveRuns"
 	s.email = "support@fiveruns.com"
-	s.homepage = "http://github.com/fiveruns/fiveruns_dash_sensor/"
+	s.homepage = "http://github.com/fiveruns/dash-sensor/"
 	s.summary = "Sensor allows Dash to monitor ad-hoc infrastructure non-invasively"
 	s.description = s.summary
 

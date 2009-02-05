@@ -9,7 +9,7 @@ Signal.trap('INT') { puts "dash-sensor terminated at #{Time.now}..."; exit(0) }
 options = OpenStruct.new
 options.environment = ENV['RAILS_ENV'] || 'development'
 options.verbose = false
-options.config_file = "#{ENV['HOME']}/.fiveruns_dash_sensor/config.rb"
+options.config_file = "#{ENV['HOME']}/.fiveruns-dash-sensor/config.rb"
 
 op = OptionParser.new do |opts|
   opts.banner = "Usage: dash-sensor [options]"
@@ -32,7 +32,7 @@ end
 op.parse!(ARGV)
 
 unless File.exist? options.config_file
-  puts "Please create a configuration file for your environment in ~/.fiveruns_dash_sensor/config.rb"
+  puts "Please create a configuration file for your environment in ~/.fiveruns-dash-sensor/config.rb"
   exit(1)
 end
 
