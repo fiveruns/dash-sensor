@@ -16,8 +16,8 @@ sensor.token = 'change-to-your-application-token'
 # The plugins are in the plugins directory.
 
 # Available options and their defaults are listed.
-sensor.plugin 'memcached', :iface => 'localhost', :port => 11211
-#sensor.plugin 'apache'
+#sensor.plugin 'memcached', :iface => 'localhost', :port => 11211
+#sensor.plugin 'apache', :url => 'http://localhost/server-status?auto'
 #sensor.plugin 'nginx'
 #sensor.plugin 'haproxy'
 #sensor.plugin 'mysql'
