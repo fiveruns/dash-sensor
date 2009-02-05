@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'fileutils'
+
+root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+log_dir = File.join(root, "log")
+FileUtils.mkdir_p log_dir unless File.exist? log_dir
+
+gem 'daemons'
+require 'daemons'
+
+options = {
+	:app_name   => "dash-sensor",
+	:dir_mode   => :normal,
+	:dir        => log_dir,
+	:multiple   => true,
+	:backtrace  => true,
+	:monitor    => false,
+	:log_output => true
+}
+
+Daemons.run(File.join(root, 'lib/daemon.rb'), options)

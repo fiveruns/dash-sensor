@@ -1,0 +1,61 @@
+module Dash::Sensor::Plugins
+  class Starling
+
+    Fiveruns::Dash.register_recipe :starling, :url => 'http://dash.fiveruns.com' do |recipe|
+      recipe.absolute :bytes, 'Cache Size', :unit => 'MB' do
+        Float(stats['bytes']) / (1024 * 1024)
+      end
+      recipe.percentage :queue_size, 'Cache Hit Rate' do
+        hits = Integer(stats['get_hits'])
+        misses = Integer(stats['get_misses'])
+        total = hits + misses
+        total == 0 ? 0 : ((Float(hits) / total) * 100)
+      end
+    end
+    
+    INSTANCE = Starling.new
+    
+    def configure(options)
+      @host = options.fetch(:iface, 'localhost')
+      @port = Integer(options.fetch(:port, 22122))
+    end
+
+    private
+    
+    def self.stats
+      if !@time || @time < Time.now - 55
+        puts "Fetching stats at #{Time.now}"
+        @stats = parse(INSTANCE.send(:stats_data))
+        @time = Time.now
+      end
+      @stats
+    end
+
+    def stats_data
+      data = ''
+      sock = TCPSocket.new(@host, @port)
+      sock.print("stats\r\n")
+      sock.flush
+      # memcached does not close the socket once it is done writing
+      # the stats data.  We need to read line by line until we detect
+      # the END line and then stop/close on our side.
+      stats = sock.gets
+      while true
+        data += stats
+        break if stats.strip == 'END'
+        stats = sock.gets
+      end
+      sock.close
+      data
+    end
+
+    def self.parse(stats_data)
+      stats = {}
+      stats_data.each_line do |line|
+        stats[$1] = $2 if line =~ /STAT (\w+) (\S+)/
+      end
+      stats
+    end
+
+  end
+end

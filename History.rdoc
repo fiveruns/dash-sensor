@@ -1,0 +1,5 @@
+= Changelog
+
+== 0.8.0 (2009-01-07)
+
+* Initial internal release.
