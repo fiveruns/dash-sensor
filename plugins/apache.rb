@@ -11,14 +11,12 @@ module Dash::Sensor::Plugins
         total = Integer(stats['Total Accesses'])
         last = Integer(old_stats['Total Accesses'])
         this_minute = total - last
-        puts "requests: #{this_minute}"
         this_minute > 0 && last > 0 ? this_minute : 0
       end
       recipe.counter :mbytes, 'Transferred', :unit => 'MB' do
         total = Integer(stats['Total kBytes'])
         last = Integer(old_stats['Total kBytes'])
         this_minute = Float(total - last) / ONE_KB
-        puts "bytes: #{this_minute}"
         this_minute > 0 && last > 0 ? this_minute : 0
       end
     end
