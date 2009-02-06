@@ -19,7 +19,7 @@ unless File.exist?("#{ENV['HOME']}/.fiveruns-dash-sensor/config.rb")
 	exit
 end
 
-root = File.expand_path("~/.fiveruns-dash-sensor"))
+root = File.expand_path("~/.fiveruns-dash-sensor")
 log_dir = File.join(root, "log")
 unless File.exist? log_dir
 	require 'fileutils'
@@ -39,4 +39,4 @@ options = {
 	:log_output => true
 }
 
-Daemons.run(File.join(root, 'lib/daemon.rb'), options)
+Daemons.run(File.join(File.dirname(__FILE__), '..', 'lib', 'daemon.rb'), options)

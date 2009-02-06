@@ -37,7 +37,7 @@ module Dash
       end
 
       def start_dash(setup)
-        LOG.info("Starting Dash Sensor for #{setup.name} [#{setup.token}]")
+        LOG.info("Configured Dash Sensor for #{setup.name} [#{setup.token}]")
         Fiveruns::Dash.configure :app => setup.token do |config|
           RECIPES.each do |(name, url, _)|
             config.add_recipe name.to_sym, url

@@ -34,6 +34,16 @@ You can run Sensor in verbose mode to get more debug output:
 
 'fiveruns-dash-sensor run -- -v'
 
+== Creating your own Plugins
+
+Sensor allows you to create your own custom plugins for your own infrastructure.  Each
+plugin should reside in ~/.fiveruns-dash-sensor/<name>.rb and config.rb should have an
+entry in it like this:
+
+sensor.plugin :<name>, any options here...
+
+Please see the existing plugins for examples of how your code should work.
+
 
 == License
 
