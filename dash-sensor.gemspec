@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
 	s.name = "dash-sensor"
-	s.version = "0.8.0"
+	s.version = "0.8.1"
 	s.authors = "FiveRuns"
 	s.email = "support@fiveruns.com"
 	s.homepage = "http://github.com/fiveruns/dash-sensor/"
