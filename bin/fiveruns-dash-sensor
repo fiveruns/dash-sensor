@@ -30,7 +30,7 @@ gem 'daemons'
 require 'daemons'
 
 options = {
-	:app_name   => "dash-sensor",
+	:app_name   => "fiveruns-dash-sensor",
 	:dir_mode   => :normal,
 	:dir        => log_dir,
 	:multiple   => true,

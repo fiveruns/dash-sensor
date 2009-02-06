@@ -8,7 +8,7 @@ module Dash::Sensor::Plugins
         queues.inject(0) { |total, queue_name| total + Integer(stats["queue_#{queue_name}_total_items"]) - Integer(stats["queue_#{queue_name}_items"]) }
       end
       recipe.absolute :queue_size, 'Current Size' do
-        queues = stats.keys.find_all { |name| name =~ /queue_\w+_items/ }
+        queues = stats.keys.find_all { |name| name =~ /queue_([^_]+?)_items/ }
         queues.inject(0) { |total, queue_name| total + Integer(stats[queue_name]) }
       end
     end
