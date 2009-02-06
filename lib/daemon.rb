@@ -7,7 +7,7 @@ Signal.trap('TERM') { puts "dash-sensor PID #{$$} exiting at #{Time.now}..."; ex
 Signal.trap('INT') { puts "dash-sensor terminated at #{Time.now}..."; exit(0) }
 
 options = OpenStruct.new
-options.environment = ENV['RAILS_ENV'] || 'development'
+options.environment = ENV['RAILS_ENV'] || 'production'
 options.verbose = false
 options.config_file = "#{ENV['HOME']}/.fiveruns-dash-sensor/config.rb"
 

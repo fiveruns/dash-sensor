@@ -1,6 +1,6 @@
 # Example configuration for FiveRuns Dash Sensor daemon.
-# Configure your Dash sensor instance here and copy this file
-# to ~/.fiveruns-dash-sensor/config.rb
+# Configure your Dash sensor instance here.
+# This file should reside in ~/.fiveruns-dash-sensor/config.rb
 #
 # We suggest you have a single Dash Sensor instance running per machine
 # and an application token per environment.  So if you have 8 machines

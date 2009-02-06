@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+
+unless File.exist?("#{ENV['HOME']}/.fiveruns-dash-sensor/config.rb")
+	local = File.join(File.dirname(__FILE__), "..", "config.rb")
+	dir = File.expand_path("~/.fiveruns-dash-sensor")
+	if File.exist?(local)
+		require 'fileutils'
+		FileUtils.mkdir_p dir
+		FileUtils.cp local, dir
+		puts ""
+		puts "Configuration Required"
+		puts ""
+		puts "A blank configuration file has been placed in ~/.fiveruns-dash-sensor/config.rb"
+		puts "Please edit this file to add your application token and configure the plugins"
+		puts "appropriate to this environment."
+		puts ""
+	end
+	exit
+end
+
+root = File.expand_path("~/.fiveruns-dash-sensor"))
+log_dir = File.join(root, "log")
+unless File.exist? log_dir
+	require 'fileutils'
+	FileUtils.mkdir_p log_dir 
+end
+
+gem 'daemons'
+require 'daemons'
+
+options = {
+	:app_name   => "dash-sensor",
+	:dir_mode   => :normal,
+	:dir        => log_dir,
+	:multiple   => true,
+	:backtrace  => true,
+	:monitor    => false,
+	:log_output => true
+}
+
+Daemons.run(File.join(root, 'lib/daemon.rb'), options)
