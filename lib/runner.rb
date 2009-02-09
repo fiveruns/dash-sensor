@@ -102,10 +102,8 @@ module Dash
       setup_signal_traps
       @process.write_pid_file if options[:daemonize]
 
-      # This block will return when the process is exiting.
       yield options
-
-      @process.remove_pid_file
+      # never reached
     end
 
     def drop_privileges
@@ -115,6 +113,7 @@ module Dash
 
     def shutdown
       STDOUT.puts "Shutting down."
+      @process.remove_pid_file
       exit(0)
     end
 
@@ -198,13 +197,6 @@ module Dash
       begin; STDERR.reopen(STDOUT); rescue Exception; end
       STDERR.sync = true
     end
-
-    # def rescue_exception
-    #   begin
-    #     yield
-    #   rescue Exception
-    #   end
-    # end
 
     def write_pid_file
       return unless @pid_file
