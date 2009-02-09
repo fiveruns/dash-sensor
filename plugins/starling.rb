@@ -22,7 +22,7 @@ module Dash::Sensor::Plugins
 
     def self.stats
       if !@time || @time < Time.now - 55
-        LOG.debug "Fetching stats at #{Time.now}"
+        logger.debug "Fetching stats at #{Time.now}"
         @stats = parse(instance.send(:stats_data))
         @time = Time.now
       end
@@ -46,8 +46,8 @@ module Dash::Sensor::Plugins
         end
         sock.close
       rescue Exception => e
-        LOG.error "Error contacting Starling at #{@host}:#{@port}"
-        LOG.error "#{e.class.name}: #{e.message}"
+        logger.error "Error contacting Starling at #{@host}:#{@port}"
+        logger.error "#{e.class.name}: #{e.message}"
       end
       data
     end

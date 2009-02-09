@@ -27,7 +27,7 @@ module Dash::Sensor::Plugins
     def self.stats
       if !@time || @time < Time.now - 55
         @old_stats = @stats || Hash.new(0)
-        LOG.debug "Fetching status at #{Time.now}"
+        logger.debug "Fetching status at #{Time.now}"
         @stats = instance.send(:stats_data)
         @time = Time.now
       end
@@ -52,8 +52,8 @@ module Dash::Sensor::Plugins
         end
         results
       rescue Exception => e
-        LOG.error "Error contacting #{@url}"
-        LOG.error "#{e.class.name}: #{e.message}"
+        logger.error "Error contacting #{@url}"
+        logger.error "#{e.class.name}: #{e.message}"
         Hash.new(0)
       end
     end
