@@ -1,7 +1,11 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'runner'
+begin
+  require 'runner'
+rescue LoadError
+  $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
+  require 'runner'
+end
 
 app_options = {
   :config_file => File.expand_path('~/.fiveruns-dash-sensor/config.rb')

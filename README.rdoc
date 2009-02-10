@@ -16,23 +16,20 @@ gem install fiveruns-dash-sensor -s http://gems.github.com
 
 == Configuration
 
-When you run 'fiveruns-dash-sensor start' for the first time, it will create a blank
+When you run 'fiveruns-dash-sensor' for the first time, it will create a blank
 configuration for you in ~/.fiveruns-dash-sensor/config.rb.  You will need to edit
 this file with your app token and activate the plugins for your environment.  Once
-done, you should be able to run 'fiveruns-dash-sensor run' for a few minutes to verify 
+done, you should be able to restart 'fiveruns-dash-sensor' for a few minutes to verify 
 everything is working as designed.  If there are no problems, you can run
-'fiveruns-dash-sensor start' to spin off the daemon into the background and forget about it.
+'fiveruns-dash-sensor -d' to spin off the daemon into the background and forget about it.
 
 == Command Summary
 
-  'fiveruns-dash-sensor run' - start the daemon in the foreground, for debugging purposes.
-  'fiveruns-dash-sensor start' - start the daemon in the background, output and PID file goes
-                                 in the ~/.fiveruns-dash-sensor/log/ directory.
-  'fiveruns-dash-sensor stop' - stop the daemon in the background
+  fiveruns-dash-sensor --help
 
-You can run Sensor in verbose mode to get more debug output:
-
-  'fiveruns-dash-sensor run -- -v'
+Sensor allows you to control OS-specific parameters like log file and PID file location,
+the user and group to run as, etc.  -d will start Sensor as a daemon.  To stop it, just
+kill the associated PID.
 
 == Creating your own Plugins
 
