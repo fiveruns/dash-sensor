@@ -17,3 +17,13 @@
 #sensor.plugin 'starling', :iface => 'localhost', :port => 22122
 #sensor.plugin 'apache', :url => 'http://localhost/server-status?auto'
 #sensor.plugin 'nginx', :url => 'http://localhost/nginx_status'
+#
+# Collect a few social network metrics from Twitter
+#sensor.plugin 'twitter', :username => 'my_username'
+#
+# Collect some real-time weather metrics from NOAA.
+# Format should be 'metric' or 'english'
+# Station should be the four letter station ID.  Find your local station here:
+# http://www.weather.gov/xml/current_obs/
+#
+#sensor.plugin 'noaa_weather', :format => 'metric', :station => 'katt'

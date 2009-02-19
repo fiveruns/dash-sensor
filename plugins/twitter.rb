@@ -10,6 +10,9 @@ rescue LoadError => le
   raise le
 end
 
+# Collect common Twitter metrics and send them to Dash.
+# Proof that Sensor and Dash work with more than boring old technical metrics.
+# They work with boring social networking metrics too.  :-)
 module Dash::Sensor::Plugins
   class Twitter
     include SensorPlugin
