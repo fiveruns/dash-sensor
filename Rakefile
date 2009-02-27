@@ -5,10 +5,12 @@ begin
   Jeweler::Tasks.new do |s|
     s.name = "dash-sensor"
     s.summary = %Q{FiveRuns Sensor allows Dash to monitor ad-hoc infrastructure non-invasively}
-    s.email = "bruce@codefluency.com"
+    s.email = "dev@fiveruns.com"
     s.homepage = "http://github.com/fiveruns/dash-sensor/"
     s.description = "Daemon to monitor ad-hoc infrastructure non-invasively for FiveRuns Dash"
     s.authors = ["FiveRuns Development Team"]
+    s.add_dependency('fiveruns-dash-ruby', '>= 0.8.2')
+    s.files = FileList["[A-Z]*.*", "{bin,lib,plugins,test}/**/*"]
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
