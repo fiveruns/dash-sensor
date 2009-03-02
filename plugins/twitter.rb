@@ -65,7 +65,7 @@ module Dash::Sensor::Plugins
 
         %w(following_count follower_count update_count).inject({}) do |result, metric|
           txt = doc.css("\##{metric}").inner_text
-          result[metric.to_sym] = Integer(txt.gsub /\D/, '')
+          result[metric.to_sym] = Integer(txt.gsub(/\D/, ''))
           result
         end
       rescue Exception => e
