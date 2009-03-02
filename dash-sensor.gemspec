@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{dash-sensor}
-  s.version = "0.8.5"
+  s.version = "0.8.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["FiveRuns Development Team"]
-  s.date = %q{2009-02-26}
+  s.date = %q{2009-03-02}
   s.default_executable = %q{fiveruns-dash-sensor}
   s.description = %q{Daemon to monitor ad-hoc infrastructure non-invasively for FiveRuns Dash}
   s.email = %q{dev@fiveruns.com}
