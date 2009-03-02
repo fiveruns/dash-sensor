@@ -58,6 +58,7 @@ module Dash
         $PLUGIN_PATH = [
           File.dirname(file), 
           File.expand_path(File.join(File.dirname(__FILE__), '..', 'plugins')),
+          '/',
           nil
         ]
 
