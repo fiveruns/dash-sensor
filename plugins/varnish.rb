@@ -37,7 +37,7 @@ module Dash::Sensor::Plugins
     end
 
     def stats_data
-      output = `#{@binary} -1 2>&1`
+      output = `#{@binary} -1 -f cache_hit,cache_miss,client_req 2>&1`
       metrics = Hash.new(0)
       output.each_line do |line|
         case line
