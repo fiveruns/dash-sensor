@@ -8,7 +8,7 @@ module SensorPlugin
     attr_accessor :instance
 
     def register(name, url, &block)
-      Fiveruns::Dash.register_recipe(name, url, &block)
+      Fiveruns::Dash.recipe(name, url, &block)
       Dash::Sensor::Engine.registered(name, url, self)
     end
   end
