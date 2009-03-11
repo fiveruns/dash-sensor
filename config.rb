@@ -17,6 +17,7 @@
 #sensor.plugin 'starling', :iface => 'localhost', :port => 22122
 #sensor.plugin 'apache', :url => 'http://localhost/server-status?auto'
 #sensor.plugin 'nginx', :url => 'http://localhost/nginx_status'
+#sensor.plugin 'varnish', :varnishstat => 'varnishstat'
 #
 # Collect a few social network metrics from Twitter
 #sensor.plugin 'twitter', :username => 'my_username'
